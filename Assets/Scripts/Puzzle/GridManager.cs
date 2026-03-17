@@ -1,0 +1,114 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
+
+public class GridManager : MonoBehaviour
+{
+    public static GridManager main;
+
+    [SerializeField] GameObject slotPrefab;
+    [SerializeField] GameObject itemPrefab;
+    [SerializeField] Transform itemsTransform;
+    [SerializeField] List<Sprite> itemArray;
+
+    Transform parentTransform;
+    List<Slot> allSlots = new List<Slot>();
+    float timer = 0f;
+    bool isCreateGrid = false;
+
+    void Awake()
+    {
+        if (main == null)
+        {
+            main = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        parentTransform = FindObjectOfType<LevelManager>().transform;
+        CreateGrid();
+    }
+
+    void Update()
+    {
+        if (!isCreateGrid)
+        {
+            timer += Time.deltaTime;
+        }
+        
+        if (timer > 0.5f && !isCreateGrid)
+        {
+            CreateItems();
+            isCreateGrid = true;
+            timer = 0f;
+        }
+    }
+
+    void CreateGrid()
+    {
+        for (var i = 0; i < itemArray.Count; i++)
+        {
+            GameObject slotObj = Instantiate(slotPrefab, transform);
+            Slot slotComponent = slotObj.GetComponent<Slot>();
+            allSlots.Add(slotComponent);
+        }
+    }
+
+    void CreateItems()
+    {
+        List<Slot> availableSlots = allSlots.Where(slot => slot.IsEmpty()).ToList();
+        
+        foreach (Sprite item in itemArray)
+        {
+            if (availableSlots.Count == 0) break;
+
+            List<Slot> validSlots = availableSlots.Where(slot => slot.IsEmpty()).ToList();
+            
+            if (validSlots.Count == 0)
+            {
+                validSlots = availableSlots;
+            }
+            
+            if (validSlots.Count == 0) break;
+            
+            int randomIndex = Random.Range(0, validSlots.Count);
+            Slot selectedSlot = validSlots[randomIndex];
+            
+            GameObject itemObj = Instantiate(itemPrefab, selectedSlot.transform.position, selectedSlot.transform.rotation, itemsTransform);
+            itemObj.GetComponent<RectTransform>().sizeDelta = selectedSlot.GetComponent<RectTransform>().sizeDelta;
+            itemObj.GetComponent<Image>().sprite = item;
+            
+            Item itemComponent = itemObj.GetComponent<Item>();
+            itemComponent.SetCurrentSlot(selectedSlot);
+            selectedSlot.SetCurrentItem(itemComponent);
+            
+            availableSlots.Remove(selectedSlot);
+        }
+    }
+
+    public void SetAllSlots(Slot _slot)
+    {
+        allSlots.Add(_slot);
+    }
+
+    public List<Slot> GetAllSlots()
+    {
+        return allSlots;
+    }
+
+    public Transform GetWrapperTransform()
+    {
+        return parentTransform;
+    }
+
+    public Transform GetParentItemsTransform()
+    {
+        return itemsTransform;
+    }
+}
