@@ -6,13 +6,13 @@ using System.Linq;
 public class Item : MonoBehaviour
 {
     Slot currentSlot;
+    int position;
     RectTransform rectTransform;
     Canvas canvas;
     bool isDraggable = false;
     bool moveToTarget = false;
     float speed = 2000f;
-    
-    
+        
     void Start()
     {
         canvas = LevelManager.main.GetCanvas();
@@ -72,6 +72,12 @@ public class Item : MonoBehaviour
     public void SetCurrentSlot(Slot _slot)
     {
         currentSlot = _slot;
+        moveToTarget = true;
+    }
+
+    public void ReturnPosition()
+    {
+        moveToTarget = true;
     }
 
     public Slot GetCurrentSlot()
@@ -88,6 +94,15 @@ public class Item : MonoBehaviour
         }
     }
 
+    public void SetPositionItem(int _position)
+    {
+        position = _position;
+    }
+
+    public int GetPositionItem()
+    {
+        return position;
+    }
     public void SetDraggableStatus()
     {
         isDraggable = true;

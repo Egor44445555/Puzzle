@@ -14,12 +14,31 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IPointerDownHandler, I
     Vector2? lastTouchPosition;
     bool isButtonPressed = false;
     bool isDraggable = false;
+    Item itemComponent;
+    Animator anim;
+    bool animationPlay = false;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = FindObjectOfType<Canvas>();
+        itemComponent = GetComponent<Item>();
+        anim = GetComponent<Animator>();
+    }
+    
+    void Update()
+    {
+        if (animationPlay)
+        {
+            AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        
+            if (stateInfo.IsName("Decrease") && stateInfo.normalizedTime >= 1.0f)
+            {
+                anim.SetBool("Decrease", false);
+                animationPlay = false;
+            }
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -43,6 +62,10 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IPointerDownHandler, I
         );
 
         pointerOffset = (Vector2)rectTransform.localPosition - localPointerPos;
+        
+        transform.SetParent(GridManager.main.GetWrapperTransform());
+        anim.SetBool("Increase", true);
+        animationPlay = true;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -62,17 +85,53 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IPointerDownHandler, I
     {
         isButtonPressed = false;
         isDraggable = false;
+
+        anim.SetBool("Increase", false);
+        anim.SetBool("Decrease", true);
+        transform.SetParent(GridManager.main.GetParentItemsTransform());
         
-        ReturnItem();
+        if (itemComponent != null)
+        {
+            bool match = false;
+            Slot oldSlot = itemComponent.GetCurrentSlot();
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+            
+            foreach (RaycastResult result in results)
+            {        
+                Slot slot = result.gameObject.GetComponent<Slot>(); 
+
+                if (slot != null)
+                {
+                    slot.GetCurrentItem().SetCurrentSlot(oldSlot);
+                    oldSlot.SetCurrentItem(slot.GetCurrentItem());
+
+                    slot.SetCurrentItem(itemComponent);                    
+
+                    itemComponent.SetCurrentSlot(slot);
+                    match = true;
+                    GridManager.main.CheckCurrentPositionItems();
+                    break;
+                }
+            }
+
+            if (!match)
+            {
+                ReturnItem();
+            }
+        }
+        else
+        {
+            ReturnItem();
+        }
 
         if (canvasGroup != null)
         {
             canvasGroup.blocksRaycasts = true;
         }
     }
-
     void ReturnItem()
     {
-       rectTransform.anchoredPosition = originalPosition;
+       itemComponent.ReturnPosition();
     }
 }

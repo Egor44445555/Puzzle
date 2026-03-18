@@ -56,6 +56,7 @@ public class GridManager : MonoBehaviour
         {
             GameObject slotObj = Instantiate(slotPrefab, transform);
             Slot slotComponent = slotObj.GetComponent<Slot>();
+            slotComponent.SetPositionSlot(i);
             allSlots.Add(slotComponent);
         }
     }
@@ -63,6 +64,7 @@ public class GridManager : MonoBehaviour
     void CreateItems()
     {
         List<Slot> availableSlots = allSlots.Where(slot => slot.IsEmpty()).ToList();
+        int index = 0;
         
         foreach (Sprite item in itemArray)
         {
@@ -81,17 +83,20 @@ public class GridManager : MonoBehaviour
             Slot selectedSlot = validSlots[randomIndex];
             
             GameObject itemObj = Instantiate(itemPrefab, selectedSlot.transform.position, selectedSlot.transform.rotation, itemsTransform);
+            itemObj.name = itemObj.name + "-" + index;
             itemObj.GetComponent<RectTransform>().sizeDelta = selectedSlot.GetComponent<RectTransform>().sizeDelta;
             itemObj.GetComponent<Image>().sprite = item;
             
             Item itemComponent = itemObj.GetComponent<Item>();
+            itemComponent.SetPositionItem(index);
             itemComponent.SetCurrentSlot(selectedSlot);
             selectedSlot.SetCurrentItem(itemComponent);
             
             availableSlots.Remove(selectedSlot);
+            index++;
         }
     }
-
+   
     public void SetAllSlots(Slot _slot)
     {
         allSlots.Add(_slot);
@@ -110,5 +115,30 @@ public class GridManager : MonoBehaviour
     public Transform GetParentItemsTransform()
     {
         return itemsTransform;
+    }
+
+    public void CheckCurrentPositionItems()
+    {
+        bool isAllMatch = true;
+
+        foreach(Slot slot in allSlots)
+        {
+            Item currentItem = slot.GetCurrentItem();
+
+            if (slot.GetPositionSlot() != currentItem.GetPositionItem())
+            {
+                isAllMatch = false;
+            }
+        }
+
+        if (isAllMatch)
+        {
+            foreach (var item in FindObjectsOfType<ParticleCreator>())
+            {
+                item.StartCreate();
+            }
+
+            UIManager.main.EndLevel();
+        }
     }
 }

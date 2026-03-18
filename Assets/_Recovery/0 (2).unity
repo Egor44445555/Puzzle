@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6564364, g: 1, b: 0.6245283, a: 1}
+  m_Color: {r: 0.18784265, g: 0.15940902, b: 0.19245279, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -854,15 +854,15 @@ MonoBehaviour:
   itemPrefab: {fileID: 7863188911948085220, guid: a08addaa08b5c0049af2d410c9938066, type: 3}
   itemsTransform: {fileID: 1152449412}
   itemArray:
-  - {fileID: -46388736, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: -330017169, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: 1205143087, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: -793956152, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: 1983741552, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: -1466219076, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: 223737045, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: 2011108341, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
-  - {fileID: -415493905, guid: e7930fd43a1ead54abbdf52161a37305, type: 3}
+  - {fileID: 5921930221037150554, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -1084529587, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -2064835514, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -1628616160, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -829297289, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -1452420522, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -1879259803, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: -2041458605, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
+  - {fileID: 2033024094, guid: daaaf6fc5256b12438621edd51fa031f, type: 3}
 --- !u!114 &882463843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.93962264, g: 0.5371804, b: 0.92346317, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

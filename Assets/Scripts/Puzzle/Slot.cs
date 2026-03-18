@@ -1,8 +1,10 @@
+using System.Numerics;
 using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
     Item currentItem;
+    int position;
     RectTransform rectTransform;
 
     void Start()
@@ -33,5 +35,15 @@ public class Slot : MonoBehaviour
     public void RemoveCurrentItem()
     {
         currentItem = null;
+    }
+
+    public void SetPositionSlot(int _position)
+    {
+        position = _position;
+    }
+
+    public int GetPositionSlot()
+    {
+        return position;
     }
 }
