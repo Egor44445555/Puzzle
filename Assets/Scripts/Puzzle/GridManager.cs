@@ -133,6 +133,8 @@ public class GridManager : MonoBehaviour
 
         if (isAllMatch)
         {
+            UIManager.main.PlayCollectedEffectEffect();            
+
             foreach (var item in FindObjectsOfType<ParticleCreator>())
             {
                 item.StartCreate();

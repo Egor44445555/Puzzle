@@ -64,6 +64,7 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IPointerDownHandler, I
         pointerOffset = (Vector2)rectTransform.localPosition - localPointerPos;
         
         transform.SetParent(GridManager.main.GetWrapperTransform());
+        UIManager.main.PlayGrabEffect();
         anim.SetBool("Increase", true);
         animationPlay = true;
     }
