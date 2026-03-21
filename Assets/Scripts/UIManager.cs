@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
             availableScenes[i] = System.IO.Path.GetFileNameWithoutExtension(scenePath);
         }
 
+        maxLevel = SceneManager.sceneCountInBuildSettings - 1;
+
         if (main == null)
         {
             main = this;
